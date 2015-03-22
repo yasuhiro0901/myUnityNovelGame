@@ -22,10 +22,17 @@ public class TextController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (currentLine < scenarios.Length && Input.GetMouseButtonDown (0)) {
-			TextUpdate();
+		if (IsCompleteDisplayText) {
+			if (currentLine < scenarios.Length && Input.GetMouseButtonDown (0)) {
+				TextUpdate();
+			}
 		}
-
+		else{
+			if(Input.GetMouseButton(0)){
+				timeUntilDisplay = 0;
+			}
+		}
+		
 		int displayCharacterCount = (int)(Mathf.Clamp01 ((Time.time - timeElapsed) / timeUntilDisplay) * currentText.Length);
 
 		if (displayCharacterCount != lastUpdateCharacter) {
@@ -43,5 +50,10 @@ public class TextController : MonoBehaviour {
 		timeElapsed = Time.time;
 
 		lastUpdateCharacter = -1;
+	}
+
+	public bool IsCompleteDisplayText
+	{
+		get{ return Time.time > timeElapsed + timeUntilDisplay;}
 	}
 }
